@@ -5,6 +5,7 @@ import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import site.nomoreparties.stellarburgers.user.*;
@@ -15,6 +16,7 @@ public class UserLoginTest {
     private ValidatableResponse response;
     private UserCreate userCreate;
     private UserLogin userLogin;
+    private String accessToken = new String();
 
     @Before
     @Step("Создание тестовых данных пользователя")
@@ -35,7 +37,6 @@ public class UserLoginTest {
         userResult.userLoginSuccess(validatableResponse);
 
         String accessToken = validatableResponse.extract().path("accessToken");
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
     @Test
@@ -50,7 +51,6 @@ public class UserLoginTest {
         userResult.userLoginIncorrectData(loginUser);
 
         String accessToken = validatableResponse.extract().path("accessToken");
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
     @Test
@@ -65,7 +65,6 @@ public class UserLoginTest {
         userResult.userLoginIncorrectData(loginUser);
 
         String accessToken = validatableResponse.extract().path("accessToken");
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
     @Test
@@ -81,6 +80,11 @@ public class UserLoginTest {
         userResult.userLoginIncorrectData(loginUser);
 
         String accessToken = validatableResponse.extract().path("accessToken");
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
+    }
+
+    @After
+    @Step("Удаление пользователя")
+    public void userDelete() {
+        userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 }

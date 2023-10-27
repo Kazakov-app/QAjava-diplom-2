@@ -33,12 +33,6 @@ public class UserEditeDataTest {
         userCreate = UserRandom.userGetRandom();
     }
 
-    @After
-    @Step("Удаление пользователя")
-    public void userDelete() {
-        userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
-    }
-
     @Test
     @DisplayName("Проверяем изменение данных пользователем без авторизации (Email)")
     @Description("Изменение данных пользователя: без авторизации, должно выдавать ошибку")
@@ -126,5 +120,11 @@ public class UserEditeDataTest {
 
         userResult.userUpdateAuthorization(userAuthorizationUpdateName);
         assertNotEquals("Name не изменен", nameExpected, nameActual);
+    }
+
+    @After
+    @Step("Удаление пользователя")
+    public void userDelete() {
+        userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 }
