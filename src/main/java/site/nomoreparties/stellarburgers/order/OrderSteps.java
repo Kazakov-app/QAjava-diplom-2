@@ -8,6 +8,8 @@ import site.nomoreparties.stellarburgers.ingredients.IngredientList;
 import java.util.Map;
 
 import static site.nomoreparties.stellarburgers.constantsApi.ApiEndPoints.*;
+import static site.nomoreparties.stellarburgers.ingredients.IngredientList.ingredients;
+import static site.nomoreparties.stellarburgers.ingredients.IngredientList.invalidKey;
 
 public class OrderSteps extends RequestSpec {
     private IngredientList ingredientList;
@@ -15,7 +17,7 @@ public class OrderSteps extends RequestSpec {
     @Step("Создание заказа без авторизации /api/orders")
     public ValidatableResponse orderCreateWithOutAuthorization() {
         return requestSpec()
-                .body(Map.of("ingredients", ingredientList.ingredients()))
+                .body(Map.of("ingredients", ingredients()))
                 .when()
                 .post(ORDER_CREATE_POST)
                 .then();
@@ -24,7 +26,7 @@ public class OrderSteps extends RequestSpec {
     @Step("Создание заказа без авторизации /api/orders")
     public ValidatableResponse orderCreateWithOutAuthorizationInvalidHash() {
         return requestSpec()
-                .body(Map.of("ingredients", "11111111111111"))
+                .body(Map.of("ingredients", invalidKey))
                 .when()
                 .post(ORDER_CREATE_POST)
                 .then();
@@ -43,7 +45,7 @@ public class OrderSteps extends RequestSpec {
     public ValidatableResponse orderCreateWithAuthorization(String accessToken) {
         return requestSpec()
                 .header("Authorization", accessToken)
-                .body(Map.of("ingredients", ingredientList.ingredients()))
+                .body(Map.of("ingredients", ingredients()))
                 .when()
                 .post(ORDER_CREATE_POST)
                 .then();

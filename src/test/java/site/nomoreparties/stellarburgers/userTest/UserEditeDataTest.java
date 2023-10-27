@@ -8,6 +8,7 @@ import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import site.nomoreparties.stellarburgers.user.*;
@@ -21,6 +22,8 @@ public class UserEditeDataTest {
     private UserResult userResult;
     private ValidatableResponse response;
     private UserCreate userCreate;
+    private String accessToken = new String();
+
 
     @Before
     @Step("Создание тестовых данных пользователя")
@@ -28,6 +31,12 @@ public class UserEditeDataTest {
         userSteps = new UserSteps();
         userResult = new UserResult();
         userCreate = UserRandom.userGetRandom();
+    }
+
+    @After
+    @Step("Удаление пользователя")
+    public void userDelete() {
+        userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
     @Test
@@ -42,8 +51,6 @@ public class UserEditeDataTest {
 
         ValidatableResponse userWithOutAuthorizationUpdateEmail = userSteps.userWithOutAuthorizationUpdate(userCreate);
         userResult.userUpdateWithOutAuthorization(userWithOutAuthorizationUpdateEmail);
-
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
     @Test
@@ -58,8 +65,6 @@ public class UserEditeDataTest {
 
         ValidatableResponse userWithOutAuthorizationUpdatePassword = userSteps.userWithOutAuthorizationUpdate(userCreate);
         userResult.userUpdateWithOutAuthorization(userWithOutAuthorizationUpdatePassword);
-
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
     @Test
@@ -74,7 +79,6 @@ public class UserEditeDataTest {
         ValidatableResponse userWithOutAuthorizationUpdateName = userSteps.userWithOutAuthorizationUpdate(userCreate);
         userResult.userUpdateWithOutAuthorization(userWithOutAuthorizationUpdateName);
 
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
     @Test
@@ -92,8 +96,6 @@ public class UserEditeDataTest {
 
         userResult.userUpdateAuthorization(userAuthorizationUpdateEmail);
         assertNotEquals("Email не изменен", emailExpected, emailActual);
-
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
     @Test
@@ -108,8 +110,6 @@ public class UserEditeDataTest {
 
         ValidatableResponse userAuthorizationUpdatePassword = userSteps.userAuthorizationUpdate(userCreate, accessToken);
         userResult.userUpdateAuthorization(userAuthorizationUpdatePassword);
-
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
     @Test
@@ -126,7 +126,5 @@ public class UserEditeDataTest {
 
         userResult.userUpdateAuthorization(userAuthorizationUpdateName);
         assertNotEquals("Name не изменен", nameExpected, nameActual);
-
-        response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 }

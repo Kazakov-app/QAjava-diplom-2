@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientList {
+    public static final String invalidKey = "11111111111111";
     private static IngredientSteps ingredientSteps;
 
     public static List<String> ingredients(){

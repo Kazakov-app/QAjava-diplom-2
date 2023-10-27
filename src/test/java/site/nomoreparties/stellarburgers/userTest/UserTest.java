@@ -41,11 +41,11 @@ public class UserTest {
     @DisplayName("Проверяем повторное создание пользователя с теми же данными")
     @Description("Проверяем, что нельзя зарегистрироваться, если пользователь уже существует")
     public void userCreateExistingData() {
-        ValidatableResponse userCreate1 = userSteps.userCreate(userCreate);
-        ValidatableResponse userCreate2 = userSteps.userCreate(userCreate);
-        userResult.userCreateExistingData(userCreate2);
+        ValidatableResponse userCreateFirst = userSteps.userCreate(userCreate);
+        ValidatableResponse userCreateSecond = userSteps.userCreate(userCreate);
+        userResult.userCreateExistingData(userCreateSecond);
 
-        String accessToken = userCreate1.extract().path("accessToken");
+        String accessToken = userCreateFirst.extract().path("accessToken");
         response = userSteps.userDelete(StringUtils.substringAfter(accessToken, ""));
     }
 
